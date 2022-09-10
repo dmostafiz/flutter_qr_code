@@ -11,15 +11,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final qrCodeFieldController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    // This also removes the _printLatestValue listener.
-    qrCodeFieldController.dispose();
-    super.dispose();
-  }
+  String qrCodeFieldController = '';
+  String qrField = '';
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +37,32 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   QrImage(
-                      data: qrCodeFieldController.text,
+                      data: qrCodeFieldController,
                       size: 200,
                       backgroundColor: Colors.white),
                   const SizedBox(
-                    height: 20,
+                    height: 50,
                   ),
                   TextField(
                     // obscureText: true,
-                    controller: qrCodeFieldController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    // controller: qrCodeFieldController,
+                    onChanged: (value) {
+                      setState(() {
+                        qrField = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'QR Code link',
                       hintText: 'Enter qr code link',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.check),
+                        onPressed: () {
+                          setState(() {
+                            qrCodeFieldController = qrField;
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ],
